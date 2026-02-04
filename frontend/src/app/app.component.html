@@ -1,0 +1,50 @@
+<div class="page">
+  <header class="header">
+    <h1>Todo Dashboard</h1>
+    <p>Track work items with Angular 20 + FastAPI + Postgres.</p>
+  </header>
+
+  <section class="card">
+    <h2>Add a todo</h2>
+    <form (ngSubmit)="addTodo()" class="form">
+      <label>
+        Title
+        <input type="text" name="title" [(ngModel)]="newTitle" placeholder="Add a title" />
+      </label>
+      <label>
+        Description
+        <textarea
+          name="description"
+          [(ngModel)]="newDescription"
+          placeholder="Optional description"
+        ></textarea>
+      </label>
+      <button type="submit">Create todo</button>
+    </form>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </section>
+
+  <section class="card">
+    <h2>Current todos</h2>
+    <div class="todo-list" *ngIf="todos.length; else empty">
+      <article class="todo" *ngFor="let todo of todos">
+        <div>
+          <h3 [class.completed]="todo.is_completed">{{ todo.title }}</h3>
+          <p>{{ todo.description || 'No description added.' }}</p>
+          <small>Created {{ todo.created_at | date: 'short' }}</small>
+        </div>
+        <div class="todo-actions">
+          <button type="button" (click)="toggleTodo(todo)">
+            {{ todo.is_completed ? 'Mark active' : 'Complete' }}
+          </button>
+          <button type="button" class="ghost" (click)="deleteTodo(todo)">
+            Delete
+          </button>
+        </div>
+      </article>
+    </div>
+    <ng-template #empty>
+      <p class="empty">Nothing here yet. Add your first todo above.</p>
+    </ng-template>
+  </section>
+</div>
